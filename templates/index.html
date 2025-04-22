@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 Crop Recommendation System</h1>
+        <form method="POST" action="/predict">
+            <div class="input-group">
+                <label for="nitrogen">Nitrogen</label>
+                <input type="number" step="any" name="nitrogen" required value="{{ form_data.nitrogen if form_data else '' }}">
+
+                <label for="phosphorus">Phosphorus</label>
+                <input type="number" step="any" name="phosphorus" required value="{{ form_data.phosphorus if form_data else '' }}">
+
+                <label for="potassium">Potassium</label>
+                <input type="number" step="any" name="potassium" required value="{{ form_data.potassium if form_data else '' }}">
+
+                <label for="temperature">Temperature (°C)</label>
+                <input type="number" step="any" name="temperature" required value="{{ form_data.temperature if form_data else '' }}">
+
+                <label for="humidity">Humidity (%)</label>
+                <input type="number" step="any" name="humidity" required value="{{ form_data.humidity if form_data else '' }}">
+
+                <label for="ph">pH</label>
+                <input type="number" step="any" name="ph" required value="{{ form_data.ph if form_data else '' }}">
+
+                <label for="rainfall">Rainfall (mm)</label>
+                <input type="number" step="any" name="rainfall" required value="{{ form_data.rainfall if form_data else '' }}">
+            </div>
+            <button type="submit">Predict Crop</button>
+        </form>
+
+        <!-- {% if prediction %}
+            <div class="result">
+                <h2>Recommended Crop: <span>{{ prediction }}</span></h2>
+                {% if confidence %}<p>Confidence: {{ confidence|round(2) }}%</p>{% endif %}
+            </div>
+        {% endif %} -->
+        {% if prediction %}
+            <div class="result">
+                <h2>Recommended Crop: <span>{{ prediction }}</span></h2>
+                {% if confidence %}<p>Confidence: {{ confidence|round(2) }}%</p>{% endif %}
+                <div class="crop-image">
+                    <img src="{{ url_for('static', filename='images/' + crop_image) }}" alt="{{ prediction }}">
+                </div>
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <p class="error">Error: {{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
